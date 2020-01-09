@@ -1,0 +1,216 @@
+C#与C++之间类型的对应
+Windows Data Type	.NET Data Type
+BOOL, BOOLEAN	Boolean or Int32
+BSTR	String
+BYTE	Byte
+CHAR	Char
+DOUBLE	Double
+DWORD	Int32 or UInt32
+FLOAT	Single
+HANDLE (and all other handle types, such as HFONT and HMENU)	IntPtr, UintPtr or HandleRef
+HRESULT	Int32 or UInt32
+INT	Int32
+LANGID	Int16 or UInt16
+LCID	Int32 or UInt32
+LONG	Int32
+LPARAM	IntPtr, UintPtr or Object
+LPCSTR	String
+LPCTSTR	String
+LPCWSTR	String
+LPSTR	String or StringBuilder*
+LPTSTR	String or StringBuilder
+LPWSTR	String or StringBuilder
+LPVOID	IntPtr, UintPtr or Object
+LRESULT	IntPtr
+SAFEARRAY	.NET array type
+SHORT	Int16
+TCHAR	Char
+UCHAR	SByte
+UINT	Int32 or UInt32
+ULONG	Int32 or UInt32
+VARIANT	Object
+VARIANT_BOOL	Boolean
+WCHAR	Char
+WORD	Int16 or UInt16
+WPARAM	IntPtr, UintPtr or Object
+
+另： 在进行string转换时，需要加入前缀[MarshalAs(UnmanagedType.LPStr)]lpdword 对应于 ref int
+
+C/C++	C#
+HANDLE, LPDWORD, LPVOID, void*	IntPtr
+LPCTSTR, LPCTSTR, LPSTR, char*, const char*, Wchar_t*, LPWSTR	String [in], StringBuilder [in, out]
+DWORD, unsigned long, Ulong	UInt32, [MarshalAs(UnmanagedType.U4)]
+bool	bool
+LP<struct>	[In] ref <struct>
+SIZE_T	uint
+LPDWORD	out uint
+LPTSTR	[Out] StringBuilder
+PULARGE_INTEGER	out ulong
+WORD	uInt16
+Byte, unsigned char	byte
+Short	Int16
+Long, int	Int32
+float	single
+double	double
+NULL pointer	IntPtr.Zero
+Uint	Uint32
+
+
+C#调用DLL文件时参数对应表
+
+Wtypes.h中的非托管类型  非托管 C语言类型        托管类名                说明 
+HANDLE           void*                     System.IntPtr                 32 位 
+BYTE             unsigned char             System.Byte                   8 位 
+SHORT            short                     System.Int16                  16 位 
+WORD              unsigned short           System.UInt16                 16 位 
+INT               int                      System.Int32                  32 位 
+UINT               unsigned int            System.UInt32                  32 位 
+LONG              long                     System.Int32                  32 位 
+BOOL              long                     System.Int32                  32 位 
+DWORD             unsigned long            System.UInt32                 32 位 
+ULONG              unsigned long           System.UInt32                 32 位 
+CHAR              char                     System.Char                   用 ANSI 修饰。
+LPSTR             char*              System.String 或 System.StringBuilder   用 ANSI 修饰。 
+LPCSTR            Const char*        System.String 或System.StringBuilder   用 ANSI 修饰。 
+LPWSTR            wchar_t*           System.String 或System.StringBuilder   用 Unicode 修饰。 
+LPCWSTR           Const wchar_t*     System.String 或System.StringBuilder   用 Unicode 修饰。 
+FLOAT              Float             System.Single                       32 位 
+DOUBLE             Double            System.Double                       64 位
+
+
+习惯用C#写东西,但平时又会碰到很多要用win32 API的地方,所以经常要用DllImport,但win32函数的类型写法是很庞杂的,相信为之困扰的不止我一个,现在我整理一份我个人的理解如下,希望高人不吝赐教。
+我的基本原则有如下几点:
+1、下面都是针对32位系统的，所以int是32位.long也是32位；
+2、各种句柄类的(H开头)，我认为一律是System.IntPtr，到目前为止没发现出错；如果哪位在使用中出错，请指出；
+3、LP和P，我实在不懂(对C 不太了解)，对于LP和P开头的函数，如果是和STR有关的，一律写为System.String，像PLCID这样指向什么东西的，写为System.UInt32(因为指向另一个地址，那就是指针，指针是32位吧)，int之类的数值型，那我就写为int[]，以方便.net程序引用(写成System.UInt32的话，给API调用应该也不会出错，但.net程序就不好引用了)
+
+如有意见，欢迎指教。谢谢
+
+BOOL=System.Int32
+BOOLEAN=System.Int32
+BYTE=System.UInt16
+CHAR=System.Int16
+COLORREF=System.UInt32
+DWORD=System.UInt32
+DWORD32=System.UInt32
+DWORD64=System.UInt64
+FLOAT=System.Float
+HACCEL=System.IntPtr
+HANDLE=System.IntPtr
+HBITMAP=System.IntPtr
+HBRUSH=System.IntPtr
+HCONV=System.IntPtr
+HCONVLIST=System.IntPtr
+HCURSOR=System.IntPtr
+HDC=System.IntPtr
+HDDEDATA=System.IntPtr
+HDESK=System.IntPtr
+HDROP=System.IntPtr
+HDWP=System.IntPtr
+HENHMETAFILE=System.IntPtr
+HFILE=System.IntPtr
+HFONT=System.IntPtr
+HGDIOBJ=System.IntPtr
+HGLOBAL=System.IntPtr
+HHOOK=System.IntPtr
+HICON=System.IntPtr
+HIMAGELIST=System.IntPtr
+HIMC=System.IntPtr
+HINSTANCE=System.IntPtr
+HKEY=System.IntPtr
+HLOCAL=System.IntPtr
+HMENU=System.IntPtr
+HMETAFILE=System.IntPtr
+HMODULE=System.IntPtr
+HMONITOR=System.IntPtr
+HPALETTE=System.IntPtr
+HPEN=System.IntPtr
+HRGN=System.IntPtr
+HRSRC=System.IntPtr
+HSZ=System.IntPtr
+HWINSTA=System.IntPtr
+HWND=System.IntPtr
+INT=System.Int32
+INT32=System.Int32
+INT64=System.Int64
+LONG=System.Int32
+LONG32=System.Int32
+LONG64=System.Int64
+LONGLONG=System.Int64
+LPARAM=System.IntPtr
+LPBOOL=System.Int16[]
+LPBYTE=System.UInt16[]
+LPCOLORREF=System.UInt32[]
+LPCSTR=System.String
+LPCTSTR=System.String
+LPCVOID=System.UInt32
+LPCWSTR=System.String
+LPDWORD=System.UInt32[]
+LPHANDLE=System.UInt32
+LPINT=System.Int32[]
+LPLONG=System.Int32[]
+LPSTR=System.String
+LPTSTR=System.String
+LPVOID=System.UInt32
+LPWORD=System.Int32[]
+LPWSTR=System.String
+LRESULT=System.IntPtr
+PBOOL=System.Int16[]
+PBOOLEAN=System.Int16[]
+PBYTE=System.UInt16[]
+PCHAR=System.Char[]
+PCSTR=System.String
+PCTSTR=System.String
+PCWCH=System.UInt32
+PCWSTR=System.UInt32
+PDWORD=System.Int32[]
+PFLOAT=System.Float[]
+PHANDLE=System.UInt32
+PHKEY=System.UInt32
+PINT=System.Int32[]
+PLCID=System.UInt32
+PLONG=System.Int32[]
+PLUID=System.UInt32
+PSHORT=System.Int16[]
+PSTR=System.String
+PTBYTE=System.Char[]
+PTCHAR=System.Char[]
+PTSTR=System.String
+PUCHAR=System.Char[]
+PUINT=System.UInt32[]
+PULONG=System.UInt32[]
+PUSHORT=System.UInt16[]
+PVOID=System.UInt32
+PWCHAR=System.Char[]
+PWORD=System.Int16[]
+PWSTR=System.String
+REGSAM=System.UInt32
+SC_HANDLE=System.IntPtr
+SC_LOCK=System.IntPtr
+SHORT=System.Int16
+SIZE_T=System.UInt32
+SSIZE_=System.UInt32
+TBYTE=System.Char
+TCHAR=System.Char
+UCHAR=System.
+
+
+Wtypes.h 中的非托管类型	非托管 C 语言类型	托管类名	说明
+HANDLE	void*	System.IntPtr	在 32 位 Windows 操作系统上为 32 位，在 64 位 Windows 操作系统上为 64 位。
+BYTE	unsigned char	System.Byte	8 位
+SHORT	short	System.Int16	16 位
+WORD	unsigned short	System.UInt16	16 位
+INT	int	System.Int32	32 位
+UINT	unsigned int	System.UInt32	32 位
+LONG	long	System.Int32	32 位
+BOOL	long	System.Int32	32 位
+DWORD	unsigned long	System.UInt32	32 位
+ULONG	unsigned long	System.UInt32	32 位
+CHAR	char	System.Char	用 ANSI 修饰。
+LPSTR	char*	System.String 或   System.Text.StringBuilder	用 ANSI 修饰。
+LPCSTR	Const char*	System.String 或   System.Text.StringBuilder	用 ANSI 修饰。
+LPWSTR	wchar_t*	System.String 或   System.Text.StringBuilder	用 Unicode 修饰。
+LPCWSTR	Const wchar_t*	System.String 或   System.Text.StringBuilder	用 Unicode 修饰。
+FLOAT	Float	System.Single	32 位
+DOUBLE	Double	System.Double	64 位
+
